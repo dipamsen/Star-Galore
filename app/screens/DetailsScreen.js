@@ -19,17 +19,22 @@ export default class DetailsScreen extends React.Component {
     this.getImage();
   }
   getImage = async () => {
+    if (this.item.name == "Sun")
+      return this.setState({
+        url: "https://solarsystem.nasa.gov/system/stellar_items/image_files/1_sun.jpg",
+      });
     const res = await fetch(
       `https://images-api.nasa.gov/search?q=${this.item.name}`
     );
     const json = await res.json();
-    this.setState({ url: json.collection.items[0]?.links[0]?.href });
+    const url = json.collection.items[0]?.links[0]?.href;
+    this.setState({ url });
   };
   render() {
     return (
       <View style={styles.container}>
         <Title style={{ textAlign: "center" }}>Details</Title>
-        <Card style={{ width: "90%", margin: "auto" }}>
+        <Card style={{ width: "90%" }}>
           <Card.Title title={this.item.name} />
           <Card.Content>
             <Paragraph>
@@ -41,12 +46,14 @@ export default class DetailsScreen extends React.Component {
               Acceleration caused by Gravity: {this.item.gravity} m/s²
             </Paragraph>
           </Card.Content>
-          <Card.Cover source={{ uri: this.state.url }} height={200} />
-          <Text style={{ fontSize: 10 }}>
-            {this.state.url
-              ? "This Image is brought to you by NASA (C) Image and Video Library"
-              : null}
-          </Text>
+          {this.state.url ? (
+            <>
+              <Card.Cover source={{ uri: this.state.url }} height={200} />
+              <Text style={{ fontSize: 10 }}>
+                This Image is brought to you by NASA (C) Image and Video Library
+              </Text>
+            </>
+          ) : null}
         </Card>
       </View>
     );
@@ -55,8 +62,8 @@ export default class DetailsScreen extends React.Component {
 
 const styles = StyleSheet.create({
   container: {
-    // flex: 1,
-    // alignItems: "center",
+    flex: 1,
+    alignItems: "center",
     // justifyContent: "center",
   },
 });
