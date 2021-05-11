@@ -31,4 +31,5 @@ def get_star():
     }), 503
 
 
-app.run()
+if(__name__ == "__main__"):
+  app.run()
