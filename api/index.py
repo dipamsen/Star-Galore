@@ -1,5 +1,6 @@
 from flask import Flask, jsonify, request
 from data import data
+from flask_cors import CORS
 
 data_dict = {}
 for sd in data:
@@ -7,6 +8,7 @@ for sd in data:
 
 
 app = Flask(__name__)
+CORS(app)
 
 
 @app.route("/")
